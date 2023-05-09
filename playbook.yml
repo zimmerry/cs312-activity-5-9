@@ -1,0 +1,19 @@
+---
+
+- name: Install packages
+  hosts: localhost
+  remote_user: ryan
+  vars_files:
+    - packages.yml
+    - auth.yml
+
+  tasks:
+    - name: List packages to install
+      ansible.builtin.debug:
+        msg: "{{ packages }}"
+    - name: Install packages with dnf
+      vars:
+        ansible_become: true
+        ansible_become_password: "{{ become_password }}"
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
